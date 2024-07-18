@@ -7,8 +7,10 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
+@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
 @RestController
 @RequestMapping("/api/v1/products")
 @Tag(name = "Products", description = "APIs for managing products")

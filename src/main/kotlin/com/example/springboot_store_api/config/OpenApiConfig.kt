@@ -40,7 +40,7 @@ class OpenApiConfig {
             .tags(
                 listOf(
                     Tag().name("Authenticate").description("Authenticate APIs"),
-                    Tag().name("Categories").description("Category management APIs"),
+                    Tag().name("Category").description("Category management APIs"),
                     Tag().name("Products").description("Product management APIs")
                 )
             )
