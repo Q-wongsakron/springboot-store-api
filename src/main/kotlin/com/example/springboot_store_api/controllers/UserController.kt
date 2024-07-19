@@ -3,6 +3,7 @@ package com.example.springboot_store_api.controllers
 import com.example.springboot_store_api.models.LoginModel
 import com.example.springboot_store_api.models.RegisterModel
 import com.example.springboot_store_api.models.ResponseModel
+import com.example.springboot_store_api.security.TokenStore
 import com.example.springboot_store_api.services.UserService
 import com.example.springboot_store_api.utils.JwtUtil
 import io.swagger.v3.oas.annotations.Operation
@@ -11,10 +12,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @Tag(name = "Authenticate", description = "Authenticate API")
 @RestController
@@ -22,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     private val userService: UserService,
     private val jwtUtil: JwtUtil,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val tokenStore: TokenStore
 ) {
 
     // ฟังก์ชันสำหรับการลงทะเบียน User
@@ -107,9 +106,11 @@ class UserController(
     @Operation(summary = "Logout", description = "Logout from the system")
     // POST /api/authenticate/logout
     @PostMapping("/logout")
-    fun logout(): ResponseEntity<ResponseModel> {
+    fun logout(@RequestHeader("Authorization") authorizationHeader: String?): ResponseEntity<ResponseModel> {
         val auth: Authentication? = SecurityContextHolder.getContext().authentication
-        if (auth != null) {
+        if (auth != null && authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            val token = authorizationHeader.substring(7)
+            tokenStore.invalidateToken(token, 3600)  // กำหนดเวลา expirationTime เป็น 1 ชั่วโมง (3600 วินาที)
             SecurityContextHolder.clearContext()
         }
         return ResponseEntity.ok(ResponseModel("Success", "Logged out successfully"))
