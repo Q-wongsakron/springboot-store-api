@@ -13,7 +13,7 @@ interface ProductRepository : JpaRepository<Product, Int> {
 
     // ปรับ ProductRepository.kt เพื่อรองรับการค้นหาและการแบ่งหน้า
     @Query("""
-        SELECT new com.itgenius.springboot_store_api.dto.ProductCategoryDTO(p.id, p.productName, p.unitPrice, p.unitInStock, p.productPicture, c.id, c.categoryName, p.createdDate, p.modifiedDate)
+        SELECT new com.example.springboot_store_api.dto.ProductCategoryDTO(p.id, p.productName, p.unitPrice, p.unitInStock, p.productPicture, c.id, c.categoryName, p.createdDate, p.modifiedDate)
         FROM Product p JOIN Category c ON p.categoryId = c.id
         WHERE (:searchQuery IS NULL OR :searchQuery = '' OR LOWER(p.productName) LIKE LOWER(CONCAT('%', :searchQuery, '%')))
           AND (:selectedCategory IS NULL OR p.categoryId = :selectedCategory)

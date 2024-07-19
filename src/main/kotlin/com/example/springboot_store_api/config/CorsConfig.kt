@@ -16,8 +16,8 @@ class CorsConfig {
 
         // Allow specific origins
         // config.addAllowedOrigin("*")
-        config.addAllowedOrigin("https://itgenius.co.th")
-        config.addAllowedOriginPattern("https://*.itgenius.co.th")
+        config.addAllowedOrigin("https://example.co.th")
+        config.addAllowedOriginPattern("https://*.example.co.th")
         config.addAllowedOriginPattern("https://*.azurewebsites.net")
         config.addAllowedOriginPattern("https://*.netlify.app")
         config.addAllowedOriginPattern("https://*.vercel.app")
